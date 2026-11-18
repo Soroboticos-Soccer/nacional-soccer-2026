@@ -14,7 +14,11 @@ O sketch M4 mantém a lógica recebida. O receptor e a movimentação estão no 
 
 ## M7 — defesa e controle
 
-O [goleiro_m7.ino](goleiro_m7/goleiro_m7.ino) registra `RPC.bind("anel", receberAnel)` e recebe direções 1 a 11. Segue a bola lateralmente, usa limites laterais de 30 cm (liberação em 32 cm) e busca manter 60 a 70 cm do fundo. Sem leitura traseira válida, suspende a translação; a correção angular continua. A função `defenderComCorrecao()` verifica o estado do BNO antes de acionar os motores.
+O [goleiro_m7.ino](goleiro_m7/goleiro_m7.ino) registra `RPC.bind("anel", receberAnel)` e recebe direções 1 a 11. Com bola, acompanha a direção lateralmente. A direção 1 indica bola à frente e não comanda deslocamento lateral. A fuga de parede tem prioridade e ativa abaixo de 30 cm quando a lateral oposta tem espaço.
+
+Sem bola, busca 180 cm na frente, 40 cm atrás e 85 cm de cada lado. Usa os ecos disponíveis de cada eixo e dá o mesmo peso a sensores opostos quando ambos têm leitura. A tolerância é de 3 cm no erro do eixo. O ajuste de profundidade tem PWM menor que o lateral e fica suspenso durante a fuga de parede.
+
+Na estratégia automática, o avanço reduz a velocidade ao se aproximar de 170 cm no sensor frontal e zera a esse valor ou abaixo. O recuo faz o mesmo a 23 cm no traseiro. Sem eco, o movimento em direção ao sensor correspondente é bloqueado. O BNO055 corrige o rumo para 0°. Com erro angular acima de 15°, o goleiro corrige o rumo antes de voltar a se deslocar. Os limites atuam sobre o comando do motor. A distância real de parada depende das leituras e da inércia.
 
 O BNO055 opera em IMUPLUS. O OLED apresenta orientação, distâncias, anel TSOP e teste de motores. A leitura real do IR Seeker está comentada em `lerSeeker()`; os valores 10 impressos nessa função são diagnóstico fixo, não medições. O dribbler permanece desligado. O bloqueio adicional de BNO no `loop()` está comentado, embora exista a verificação dentro da função de defesa.
 

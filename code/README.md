@@ -1,6 +1,6 @@
 # Programações dos robôs
 
-Códigos fornecidos pela equipe para Arduino GIGA R1 WiFi, organizados em sketches separados por núcleo. Os M7s foram adicionados integralmente a partir dos anexos, sem alterar sua lógica; os M4s existentes foram mantidos.
+Códigos fornecidos pela equipe para Arduino GIGA R1 WiFi, organizados em sketches separados por núcleo. Os M7s partiram dos anexos fornecidos pela equipe. O goleiro inclui a estratégia de alinhamento e os limites de deslocamento descritos em seu README.
 
 | Robô | M4 — leitura | M7 — controle | Direção RPC |
 | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Use o suporte de placa Arduino GIGA R1 WiFi (Arduino Mbed OS Giga Boards), com `
 - `Adafruit_BNO055.h` e `utility/imumaths.h` — Adafruit BNO055;
 - `Adafruit_GFX.h` — Adafruit GFX Library;
 - `Adafruit_SSD1306.h` — Adafruit SSD1306;
-- `HTInfraredSeeker.h` — biblioteca HiTechnic IR Seeker compatível com `InfraredSeeker::ReadAC()`;
+- `HTInfraredSeeker.h` — biblioteca HiTechnic IR Seeker compatível com `InfraredSeeker::ReadAC()` (apenas atacante);
 - `Servo.h` — implementação compatível com o GIGA.
 
 Instale também as dependências solicitadas pelo gerenciador de bibliotecas. As versões das bibliotecas não foram informadas nos anexos; a compilação ainda não foi validada.
