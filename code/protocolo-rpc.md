@@ -20,6 +20,6 @@ Exemplos: apenas o sensor físico 1 ativo produz direção 1 e máscara 1 no gol
 
 A janela de leitura é de 50 ms. O processamento e, no goleiro, a impressão Serial acrescentam tempo ao ciclo; o envio não tem período fixo garantido de 50 ms.
 
-O código receptor do M7 não foi fornecido. A integração deve respeitar a diferença de numeração entre os robôs. Esse RPC é comunicação entre núcleos da mesma placa, não entre os dois robôs.
+Os receptores estão publicados no [M7 do atacante](atacante/atacante_m7/atacante_m7.ino) e no [M7 do goleiro](goleiro/goleiro_m7/goleiro_m7.ino). Ambos registram `RPC.bind("anel", receberAnel)` e copiam os dados sob um mutex para o cache do loop. Amostras com mais de `2 * TSOP_TEMPO_JANELA` (100 ms) são convertidas para direção -1 e máscara 0. O goleiro também valida o intervalo 1..11. A integração respeita a diferença de numeração entre os robôs. Esse RPC é comunicação entre núcleos da mesma placa, não entre os dois robôs.
 
 [Voltar às programações](README.md)
