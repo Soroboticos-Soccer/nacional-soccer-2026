@@ -418,7 +418,9 @@ Os robôs não possuem comunicação direta entre si durante a partida. No entan
 
 *Lista de Materiais*
 
-[BOM.xlsx](https://sesisenaispedu-my.sharepoint.com/:x:/g/personal/antoni_frigerio_portalsesisp_org_br/IQARvzUoNFhvR7zJtImBCNMOAaJihk4XXiH-QJTbcqsfziY?e=YRPKEP)
+[bom.csv — lista de materiais](../electronics/bom.csv)
+
+[Notas da BOM e conferências de valores](../electronics/README.md)
 
 ## Custo
 
