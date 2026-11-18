@@ -1,0 +1,10 @@
+Nº,Nome,Tipo,Descrição / finalidade,Fonte / repositório,Autor / desenvolvedor,Custo (R$),Custo (US$),Observações / licença
+1,Hikari hk-936A,Ferramenta,Estação de solda,Hikari,Hikari,330,56.12,N/A
+2,Estanho vonder,Ferramenta,Estanho ,vonder,vonder,150,25,N/A
+3,Anycubic Kobra S1,Ferramenta,Maquina de impresão 3D,Anycubic,Anycubic,6859,499,N/A
+4, Anycubic Photon Mono M7,Ferramenta,maquina de impresão 3d de resina flexivel,Anycubic,Anycubic,2679,429,N/A
+5,Anycubic Whash and cure 2.0,Ferramenta,whash and cure,Anycubic,Anycubic,873.38,149,N/A
+6,Adafruit BNO055,Biblioteca,Biblioteca BNO055,adafruit,Kevin Townsend,N/A,N/A,Licença MIT
+7,Ultrasonic.h,Biblioteca,Biblioteca Ultrassonico,Ultrasonic,Erick Simões ,,,Licença MIT
+8,Adafruit SSD1306,Biblioteca,Biblioteca tela OLED,Adafruit SSD1306,Limor Fried,,,Licença BSD
+9,HTInfraredSeeker,Biblioteca,Biblioteca Seeker,blechschmidt/HTInfraredSeeker ,Birk Blechschmidt,,,N/A

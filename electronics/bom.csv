@@ -1,25 +1,21 @@
-Sistema,Item / especificação,Qtd.,Unidade de compra,Preço unitário (R$),Subtotal (R$),Fornecedor informado,Situação,Observações / conferência
-Estrutura,Filamento ABS,3,kg,100,300,Robocore,Informado,Preço declarado por kg; conferir consumo por robô.
-Fixação,Parafusos,45,un.,1,45,Robocore,Informado,"Ajustar se a quantidade for por equipe, não por robô."
-Sensoriamento,Sensores ultrassônicos,4,un.,10,40,Robocore,Conferir instalação,"Presentes na lista e no render, porém histórico anterior dizia não instalados."
-Interface,Microswitch,1,un.,5.6,5.6,Robocore,Informado,Conferir função no robô.
-Sensoriamento,Giroscópio BNO055,1,un.,300,300,Robocore,Informado,Sensor de orientação.
-Conectores,XT60,4,pares,3,12,Robocore,Informado,Preço declarado por par.
-Alimentação,Regulador de tensão,1,un.,14.5,14.5,Robocore,Informado,Conferir tensão/corrente nominal.
-Controle,Arduino GIGA R1 WiFi,1,un.,960,960,Robocore,Informado,Controlador principal da arquitetura atual.
-Fabricação,Resina Flex,1,frasco de 500 mL,200,200,Robocore,Informado,"R$200 pelo volume total de 500 mL, não por mL."
-Alimentação,Bateria LiPo 2200 mAh,1,un.,280,280,Robocore,Informado,Conferir tensão (12 V nominal informada no projeto).
-Interface,Display OLED I2C,1,un.,24,24,Robocore,Informado,Visualização de informações do sistema.
-Interface,Interruptor basculante,3,un.,7,21,Robocore,Informado,3 chaves conforme a lista enviada.
-Acionamento,Ponte H L298N,2,un.,26,52,Robocore,Informado,Quantidade: 2 drivers.
-Mecânica,Eixo – arame trefilado,1,lote de 7 m,50,50,Robocore,Informado,"R$50 pelo lote de 7m, não por metro."
-Conexões,Cabos jumper,50,un.,0.5,25,Robocore,Informado,Custo por cabo individual.
-Sensoriamento,TSOP4838,16,un.,1.25,20,Robocore,Informado,16 receptores de infravermelho.
-Locomoção,Acoplamento da roda,4,un.,20,80,Robocore,Informado,Acoplamentos para rodas omni.
-Driblador,Motor brushless para aeromodelo,1,un.,68,68,Robocore,Informado,Conferir modelo A2212 1400KV citado no TDP.
-Locomoção,Motor DC 1.000 RPM,4,un.,87.5,350,Robocore,Informado,Valor nominal de rotação.
-Sensoriamento,HiTechnic IR Seeker,1,un.,500,500,Robocore,Conferir arquitetura,O contexto anterior o classifica como sensor substituído; aparece na numeração recente.
-Driblador,ESC para motor brushless,1,un.,50,50,Robocore,Informado,Conferir 30A citado no TDP.
-Pendente,Resina ABS Like,,a confirmar,,,A confirmar,Pendente de cotação,Item solicitado no feedback nº 16; confirmar quantidade e custo.
-Pendente,Suporte/montante para spinner,,a confirmar,,,A confirmar,Pendente de cotação,Item solicitado no feedback nº 16; confirmar se produzido ou comprado.
-Pendente,Arruelas de fixação dos roletes,,un.,,,A confirmar,Pendente de cotação,Item solicitado no feedback nº 16; confirmar quantidade e custo.
+Nº,Componente,Nome / modelo da peça,Fabricante / autor,Fonte / fornecedor,Quantidade,Custo unitário (R$),Custo unitário (US$),Custo total (R$),Custo total (US$)
+1,Parafusos,Parafusos,N/A,Robocore,45,1,0.17,45,7.75
+2,Filamento ABS,Filamento ABS,Create,Robocore,3KG,100,17.21,300,51.63
+3,Sensores ultrassonicos,Sensores ultrassonicos,Robocore,Robocore,4,10,1.72,40,6.88
+4,Giroscópio BNO005,Giroscópio BNO005,Bosch,Robocore,1,300,51.63,300,51.633
+5,XT60,XT60,Robocore,Robocore,8,1.5,0.26,12,2.07
+6,Regulador de tensão,Regulador de tensão,Robocore,Robocore,1,14.5,2.5,14.5,2.5
+7,Arduino Giga R1 Wifi,Arduino Giga R1 Wifi,Arduino,Robocore,1,960,165.23,960,165.23
+8,Resina flex,Resina flex,3D cure flex,Robocore,500ml,200,34.42,200,34.42
+9,Bateria Lipo 2200mAh,Bateria Lipo 2200mAh,Leão,Robocore,1,280,48.19,280,48.19
+10,Display OLED I2C,Display OLED I2C,Robocore,Robocore,1,24,4.13,24,4.13
+11,Interruptor basculante,Interruptor basculante,Robocore,Robocore,3,7,1.2,21,3.6
+12,Ponte H,Drivers de motor ponte h L298N,STMicroeletronics,Robocore,2,26,4.47,52,8.94
+13,Eixo,Arame trefilado,Metso,Robocore,7m,50,8.61,50,8.61
+14,Jumpers,Jumpers,Robocore,Robocore,50,0.5,0.09,25,4.5
+15,TSOP4838,TSOP4838,Robocore,Robocore,16,1.25,0.22,20,3.52
+16,Acoplamento da roda,Acoplamento da roda,Robocore,Robocore,4,20,3.44,80,13.76
+17,Motor DC 1000 rpm,Motor DC 1000 rpm,Robocore,Robocore,4,87.5,15.06,350,60.24
+18,Seeker hitechnic,Seeker hitechnic,hitechnic,Sesi,1,500,86.6,500,86.6
+19,Resina ABS like,Resina ABS like,Anycubic,Slim 3D,1L,150,25.82,150,25.82
+20,Arruelas,Arruelas,N/A,Casa dos Parafusos,100,0.1,0.02,10,2
