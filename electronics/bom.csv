@@ -1,0 +1,25 @@
+Sistema,Item / especificação,Qtd.,Unidade de compra,Preço unitário (R$),Subtotal (R$),Fornecedor informado,Situação,Observações / conferência
+Estrutura,Filamento ABS,3,kg,100,300,Robocore,Informado,Preço declarado por kg; conferir consumo por robô.
+Fixação,Parafusos,45,un.,1,45,Robocore,Informado,"Ajustar se a quantidade for por equipe, não por robô."
+Sensoriamento,Sensores ultrassônicos,4,un.,10,40,Robocore,Conferir instalação,"Presentes na lista e no render, porém histórico anterior dizia não instalados."
+Interface,Microswitch,1,un.,5.6,5.6,Robocore,Informado,Conferir função no robô.
+Sensoriamento,Giroscópio BNO055,1,un.,300,300,Robocore,Informado,Sensor de orientação.
+Conectores,XT60,4,pares,3,12,Robocore,Informado,Preço declarado por par.
+Alimentação,Regulador de tensão,1,un.,14.5,14.5,Robocore,Informado,Conferir tensão/corrente nominal.
+Controle,Arduino GIGA R1 WiFi,1,un.,960,960,Robocore,Informado,Controlador principal da arquitetura atual.
+Fabricação,Resina Flex,1,frasco de 500 mL,200,200,Robocore,Informado,"R$200 pelo volume total de 500 mL, não por mL."
+Alimentação,Bateria LiPo 2200 mAh,1,un.,280,280,Robocore,Informado,Conferir tensão (12 V nominal informada no projeto).
+Interface,Display OLED I2C,1,un.,24,24,Robocore,Informado,Visualização de informações do sistema.
+Interface,Interruptor basculante,3,un.,7,21,Robocore,Informado,3 chaves conforme a lista enviada.
+Acionamento,Ponte H L298N,2,un.,26,52,Robocore,Informado,Quantidade: 2 drivers.
+Mecânica,Eixo – arame trefilado,1,lote de 7 m,50,50,Robocore,Informado,"R$50 pelo lote de 7m, não por metro."
+Conexões,Cabos jumper,50,un.,0.5,25,Robocore,Informado,Custo por cabo individual.
+Sensoriamento,TSOP4838,16,un.,1.25,20,Robocore,Informado,16 receptores de infravermelho.
+Locomoção,Acoplamento da roda,4,un.,20,80,Robocore,Informado,Acoplamentos para rodas omni.
+Driblador,Motor brushless para aeromodelo,1,un.,68,68,Robocore,Informado,Conferir modelo A2212 1400KV citado no TDP.
+Locomoção,Motor DC 1.000 RPM,4,un.,87.5,350,Robocore,Informado,Valor nominal de rotação.
+Sensoriamento,HiTechnic IR Seeker,1,un.,500,500,Robocore,Conferir arquitetura,O contexto anterior o classifica como sensor substituído; aparece na numeração recente.
+Driblador,ESC para motor brushless,1,un.,50,50,Robocore,Informado,Conferir 30A citado no TDP.
+Pendente,Resina ABS Like,,a confirmar,,,A confirmar,Pendente de cotação,Item solicitado no feedback nº 16; confirmar quantidade e custo.
+Pendente,Suporte/montante para spinner,,a confirmar,,,A confirmar,Pendente de cotação,Item solicitado no feedback nº 16; confirmar se produzido ou comprado.
+Pendente,Arruelas de fixação dos roletes,,un.,,,A confirmar,Pendente de cotação,Item solicitado no feedback nº 16; confirmar quantidade e custo.
