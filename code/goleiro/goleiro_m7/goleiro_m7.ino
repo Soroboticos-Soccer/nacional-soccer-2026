@@ -2,8 +2,7 @@
 // GOLEIRO - RoboCup Junior  (nucleo M7)
 // Estrategia:
 //  - Laterais: nunca menos de 30 cm de nenhuma parede (regra de fuga).
-//  - Sem bola: busca 180 cm na frente, 40 cm atras e 85 cm de cada lado.
-//  - Limites: avanco para a 170 cm da frente e recuo a 23 cm do fundo.
+//  - Traseiro: mantem entre 60 e 70 cm (perto da linha do gol).
 //  - Defesa: desliza para esquerda/direita conforme a direcao da bola,
 //    sempre mantendo o angulo 0 com correcao em tempo real.
 //
@@ -26,6 +25,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
+#include <HTInfraredSeeker.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Servo.h>
@@ -1154,33 +1154,26 @@ void setup() {
 // =====================================================
 
 // ---- Velocidades ----
-const int V_DEFESA = 200;
-const int V_FUGA = 240;
-const int V_ALINHAR_LAT_MAX = 160;
-const int V_ALINHAR_LONG_MAX = 95;
-const int V_ALINHAR_MIN = 65;
-const int KP_ALINHAR_LAT = 7;   // PWM por cm de erro lateral
-const int KP_ALINHAR_LONG = 5;  // PWM por cm de erro frente/tras
-const int KP_LIMITE_LONG = 8;   // PWM por cm de folga ate o limite
-const int V_PICO = 240;
-const float ANGULO_MAX_TRANSLACAO = 15.0f;
+const int V_DEFESA = 200;       // deslize lateral seguindo a bola
+const int V_FUGA   = 240;       // fuga de parede lateral
+const int V_TRAS_MIN = 70;      // ajuste suave da distancia traseira
+const int V_TRAS_MAX = 200;
+const float KP_TRAS  = 5.0f;    // PWM por cm de erro no eixo frente/tras
+const int V_PICO     = 240;     // limite da translacao (sobra PWM p/ o giro)
 
-// ---- Ultrassonicos (cm) ----
-const long LAT_PERIGO = 30;
-const long LAT_LIBERAR = 32;
-const long FRENTE_ALVO = 180;
-const long TRAS_ALVO = 40;
-const long LATERAL_ALVO = 85;
-const long FRENTE_LIMITE = 170;
-const long TRAS_LIMITE = 23;
-const long TOLERANCIA_ALINHAMENTO = 3;
+// ---- Ultrassonicos ----
+const long LAT_PERIGO       = 30;  // nunca ficar a menos de 30 cm de uma lateral
+const long LAT_LIBERAR      = 32;  // histerese: so sai da fuga acima disso
+const long LAT_MIN_OPOSTO   = 30;  // lado oposto precisa ter espaco para fugir
+const long TRAS_MIN         = 60;  // faixa desejada do sensor traseiro
+const long TRAS_MAX         = 70;
 
 // ---- Defesa pela direcao fisica do TSOP (1..11) ----
 // Numeracao anti-horaria:
 //   1      : bola de frente -> parado no eixo lateral
 //   2..6   : bola a esquerda -> grupo ESQ
 //   7..11  : bola a direita -> grupo DIR
-//   -1     : bola nao vista -> alinha pela distancia das paredes
+//   -1     : bola nao vista -> parado no eixo lateral
 // Lacuna traseira entre 6 e 7; nao existe direcao de sensor nessa lacuna.
 const int GK_ESQ_MIN = 2;
 const int GK_ESQ_MAX = 6;
@@ -1189,92 +1182,103 @@ const int GK_DIR_MAX = 11;
 // Se o robo se mover para o lado errado, troque para true.
 const bool GK_LADO_INVERTIDO = false;
 
-// Os erros dos dois sensores ja estao no mesmo sentido de movimento.
-// Com dois ecos, usa a media. Com apenas um, usa sua referencia.
-long combinarErros(long erroA, bool validoA, long erroB, bool validoB) {
-  if (validoA && validoB) return (erroA + erroB) / 2;
-  if (validoA) return erroA;
-  return validoB ? erroB : 0;
-}
-
-int pwmAlinhamento(long erro, int ganho, int maximo) {
-  if (abs(erro) <= TOLERANCIA_ALINHAMENTO) return 0;
-  int pwm = constrain((int)(abs(erro) * ganho), V_ALINHAR_MIN, maximo);
-  return erro > 0 ? pwm : -pwm;
-}
-
 void defenderComCorrecao() {
+  // Indices: 0 = frente, 1 = tras, 2 = esquerda, 3 = direita.
   static int sensorFugaLat = -1;
-  const long frente = lerFrente();
-  const long tras = lerTras();
-  const long esquerda = lerEsquerda();
-  const long direita = lerDireita();
 
+  // Le cada sensor uma vez; o traseiro por ultimo (leitura mais recente).
+  long distancia[4];
+  distancia[0] = lerFrente();
+  distancia[2] = lerEsquerda();
+  distancia[3] = lerDireita();
+  distancia[1] = lerTras();
+
+  bool trasValido = distancia[1] > 0;
+
+  // ---------- 1) Fuga lateral (nunca menos de 30 cm) ----------
+  // Mesma regra do atacante: escolhe o sensor mais proximo que viola o limite,
+  // com histerese, e so foge se o lado oposto tiver espaco.
+  int escolhido = -1;
+  long menor = 100000L;
+  for (int i = 2; i <= 3; i++) {
+    long limiar = (i == sensorFugaLat) ? LAT_LIBERAR : LAT_PERIGO;
+    int oposto = (i == 2) ? 3 : 2;
+
+    if (distancia[i] > 0 && distancia[i] < limiar &&
+        distancia[oposto] > LAT_MIN_OPOSTO &&
+        distancia[i] < menor) {
+      menor = distancia[i];
+      escolhido = i;
+    }
+  }
+  sensorFugaLat = escolhido;
+
+  // Paredes "ocupadas": a defesa nao pode empurrar o robo para elas.
+  bool bloqueiaEsq = distancia[2] > 0 && distancia[2] < LAT_LIBERAR;
+  bool bloqueiaDir = distancia[3] > 0 && distancia[3] < LAT_LIBERAR;
+
+  // x positivo = direita; y positivo = frente.
+  int x = 0;
+  int y = 0;
+
+  if (sensorFugaLat == 2) {
+    x = V_FUGA;       // esquerda perto: ir a direita
+  } else if (sensorFugaLat == 3) {
+    x = -V_FUGA;      // direita perto: ir a esquerda
+  } else {
+    // ---------- 2) Defesa: segue a bola lateralmente ----------
+    int direcao = direcaoFinalTSOP;   // 1..11 ou -1
+    bool irEsq = (direcao >= GK_ESQ_MIN && direcao <= GK_ESQ_MAX);
+    bool irDir = (direcao >= GK_DIR_MIN && direcao <= GK_DIR_MAX);
+    if (GK_LADO_INVERTIDO) { bool t = irEsq; irEsq = irDir; irDir = t; }
+
+    if (irEsq) x = -V_DEFESA;
+    else if (irDir) x = V_DEFESA;
+
+    // Nao entra na zona proibida das laterais.
+    if (x < 0 && bloqueiaEsq) x = 0;
+    if (x > 0 && bloqueiaDir) x = 0;
+  }
+
+  // ---------- 3) Manter 60..70 cm do fundo (linha do gol) ----------
+  if (trasValido) {
+    if (distancia[1] < TRAS_MIN) {
+      long erroT = TRAS_MIN - distancia[1];
+      y = constrain((int)(V_TRAS_MIN + KP_TRAS * erroT), V_TRAS_MIN, V_TRAS_MAX);   // muito perto: avanca
+    } else if (distancia[1] > TRAS_MAX) {
+      long erroT = distancia[1] - TRAS_MAX;
+      y = -constrain((int)(V_TRAS_MIN + KP_TRAS * erroT), V_TRAS_MIN, V_TRAS_MAX);  // longe: recua
+    }
+  }
+
+  int m1 = 0, m2 = 0, m3 = 0, m4 = 0;
+
+  // Sem eco traseiro, suspende a translacao ate recuperar a leitura.
+  // A correcao angular continua sendo aplicada abaixo.
+  if (trasValido) {
+    m1 = -y - x;
+    m2 =  y - x;
+    m3 = -y + x;
+    m4 =  y + x;
+
+    // Limita a diagonal antes de acrescentar a correcao angular.
+    int pico = max(max(abs(m1), abs(m2)), max(abs(m3), abs(m4)));
+    if (pico > V_PICO) {
+      float fator = (float)V_PICO / pico;
+      m1 = (int)(m1 * fator);
+      m2 = (int)(m2 * fator);
+      m3 = (int)(m3 * fator);
+      m4 = (int)(m4 * fator);
+    }
+  }
+
+  // ---------- 4) Correcao de orientacao (manter 0 graus) ----------
   float erro = calcularErro(lerOrientacao(), 0.0f);
   if (!bnoProntoParaJogar()) {
     correcaoOrientacaoAtiva = false;
     parar();
     return;
   }
-
-  // Fuga lateral tem prioridade sobre a bola e o alinhamento.
-  const long limiarEsq = sensorFugaLat == US_ESQUERDA ? LAT_LIBERAR : LAT_PERIGO;
-  const long limiarDir = sensorFugaLat == US_DIREITA ? LAT_LIBERAR : LAT_PERIGO;
-  if (esquerda > 0 && esquerda < limiarEsq && direita >= LAT_LIBERAR) {
-    sensorFugaLat = US_ESQUERDA;
-  } else if (direita > 0 && direita < limiarDir && esquerda >= LAT_LIBERAR) {
-    sensorFugaLat = US_DIREITA;
-  } else {
-    sensorFugaLat = -1;
-  }
-
-  // x positivo = direita; y positivo = frente.
-  int x = 0;
-  int y = 0;
-  const int direcao = direcaoFinalTSOP;
-
-  if (sensorFugaLat == US_ESQUERDA) {
-    x = V_FUGA;
-  } else if (sensorFugaLat == US_DIREITA) {
-    x = -V_FUGA;
-  } else if (direcao == -1) {
-    const long erroLateral = combinarErros(LATERAL_ALVO - esquerda, esquerda > 0,
-                                           direita - LATERAL_ALVO, direita > 0);
-    x = pwmAlinhamento(erroLateral, KP_ALINHAR_LAT, V_ALINHAR_LAT_MAX);
-  } else {
-    if (direcao >= GK_ESQ_MIN && direcao <= GK_ESQ_MAX) x = -V_DEFESA;
-    if (direcao >= GK_DIR_MIN && direcao <= GK_DIR_MAX) x = V_DEFESA;
-    if (GK_LADO_INVERTIDO) x = -x;
-  }
-
-  // Com bola, so acompanha no eixo lateral. Sem bola, corrige profundidade.
-  // Nao corrige profundidade durante uma fuga lateral.
-  if (direcao == -1 && sensorFugaLat == -1) {
-    const long erroLongitudinal = combinarErros(frente - FRENTE_ALVO, frente > 0,
-                                                TRAS_ALVO - tras, tras > 0);
-    y = pwmAlinhamento(erroLongitudinal, KP_ALINHAR_LONG, V_ALINHAR_LONG_MAX);
-  }
-
-  // So desloca na direcao de um sensor com eco e espaco disponivel.
-  if ((x < 0 && esquerda < LAT_LIBERAR) || (x > 0 && direita < LAT_LIBERAR)) x = 0;
-  if (y > 0) {
-    const long folga = max(0L, frente - FRENTE_LIMITE);
-    y = (int)min((long)y, folga * KP_LIMITE_LONG);
-  } else if (y < 0) {
-    const long folga = max(0L, tras - TRAS_LIMITE);
-    y = -(int)min((long)-y, folga * KP_LIMITE_LONG);
-  }
-
-  // Com muito desvio de rumo, primeiro gira para voltar a medir o campo de frente.
-  if (fabsf(erro) > ANGULO_MAX_TRANSLACAO) {
-    x = 0;
-    y = 0;
-  }
-
-  int m1 = -y - x;
-  int m2 =  y - x;
-  int m3 = -y + x;
-  int m4 =  y + x;
 
   // Histerese: evita chacoalhar ao redor do zero.
   float moduloErro = fabsf(erro);
@@ -1293,7 +1297,7 @@ void defenderComCorrecao() {
 
   // Prioriza a orientacao: reserva espaco no PWM para o giro.
   int picoTranslacao = max(max(abs(m1), abs(m2)), max(abs(m3), abs(m4)));
-  int limiteTranslacao = min(V_PICO, 255 - abs(correcao));
+  int limiteTranslacao = 255 - abs(correcao);
   if (picoTranslacao > limiteTranslacao) {
     float fator = (float)limiteTranslacao / (float)picoTranslacao;
     m1 = (int)(m1 * fator);
