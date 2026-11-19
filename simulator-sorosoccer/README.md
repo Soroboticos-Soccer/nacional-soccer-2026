@@ -16,6 +16,8 @@ O [TDP](../tdp/TDP.md) apresenta o uso da simulação no desenvolvimento, e o [p
 
 ## Conteúdo disponível
 
+O código-fonte e as instruções do simulador estão no [repositório SoroSoccer](https://github.com/hcabral008/SoroSoccer).
+
 Esta pasta apresenta a documentação do simulador. Para acessar o firmware embarcado, consulte os sketches do [atacante](../code/atacante/README.md) e do [goleiro](../code/goleiro/README.md).
 
 [Início](../README.md) · [Licença MIT](../LICENSE)
