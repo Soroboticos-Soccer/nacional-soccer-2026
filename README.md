@@ -6,8 +6,6 @@
 **SESI CE 123 · Sorocaba, São Paulo · Brasil**
 
 [![Liga](https://img.shields.io/badge/RoboCupJunior-Soccer_Infrared-FF00B8?style=flat-square)](tdp/TDP.md)
-[![Plataforma](https://img.shields.io/badge/Arduino-GIGA_R1_WiFi-00878F?style=flat-square)](code/README.md)
-[![Licença](https://img.shields.io/badge/Licença-MIT-FF00B8?style=flat-square)](LICENSE)
 
 [Documentação técnica](tdp/TDP.md) · [Programação](code/README.md) · [Lista de materiais](electronics/bom.csv) · [Pôster](poster/README.md)
 
