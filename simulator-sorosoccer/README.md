@@ -1,9 +1,21 @@
 # SoroSoccer
 
-Simulador próprio da equipe para testar estratégias, movimentação e sensores em partidas virtuais. O [pôster](../poster/README.md) e o [TDP](../tdp/TDP.md) apresentam seu uso no desenvolvimento dos robôs.
+**Simulação de futebol de robôs · Sorobóticos**
 
-Esta pasta contém apenas documentação. O código-fonte, executável e instruções para executar o simulador ainda não foram publicados neste repositório.
+[Início](../README.md) · [TDP](../tdp/TDP.md) · [Firmware](../code/README.md)
 
-Os sketches embarcados do atacante e do goleiro, com os núcleos M4 e M7, estão em [programações](../code/README.md). Testes no simulador não substituem a validação desses sketches no Arduino GIGA e nos robôs físicos.
+O SoroSoccer é o simulador desenvolvido pela equipe para explorar estratégias, movimentação e respostas dos sensores em partidas virtuais. Ele integra o processo de desenvolvimento dos robôs e permite experimentar decisões de ataque e defesa.
 
-[Licença MIT](../LICENSE) · [Início](../README.md)
+## Aplicação no projeto
+
+- Exploração de estratégias de busca, condução e defesa.
+- Observação da movimentação em diferentes situações de jogo.
+- Preparação dos algoritmos para a integração com os robôs físicos.
+
+O [TDP](../tdp/TDP.md) apresenta o uso da simulação no desenvolvimento, e o [pôster](../poster/README.md) reúne uma visão visual do projeto.
+
+## Conteúdo disponível
+
+Esta pasta apresenta a documentação do simulador. Para acessar o firmware embarcado, consulte os sketches do [atacante](../code/atacante/README.md) e do [goleiro](../code/goleiro/README.md).
+
+[Início](../README.md) · [Licença MIT](../LICENSE)

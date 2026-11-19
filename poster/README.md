@@ -1,16 +1,24 @@
-# Pôster — Sorobóticos 2026
+# Pôster da equipe
 
-[Pôster original em PNG](banner-soccer-2026.png), fornecido pela equipe e preservado sem redimensionamento ou edição.
+**Sorobóticos · RoboCupJunior Soccer Infrared · 2026**
 
-[![Pôster Sorobóticos](banner-soccer-2026.png)](banner-soccer-2026.png)
+[Início](../README.md) · [TDP](../tdp/TDP.md) · [BOM](../electronics/README.md)
 
-O material apresenta equipe, fabricação, arquitetura dos robôs, sensores, estratégias, SoroSoccer e resultados relatados pela equipe. Consulte também o [TDP](../tdp/TDP.md), os [arquivos CAD](../cad/README.md) e a [programação M4/M7](../code/README.md).
+## Apresentação do projeto
 
-## Notas de versão
+O pôster reúne equipe, fabricação, arquitetura, sensores, estratégias e resultados do desenvolvimento dos robôs.
 
-- O pôster destaca o anel de 16 TSOP4838. Nos códigos publicados, o atacante usa 16 sensores e o goleiro usa 11, com lacuna traseira.
-- O pôster apresenta R$ 3.439,10; a [BOM publicada](../electronics/README.md) soma R$ 3.397,10 em itens precificados, e o TDP cita R$ 3.197,10. Os valores das fontes foram preservados e ainda precisam de conciliação.
-- O pôster cita redução do tempo de manutenção de aproximadamente 22 para 5 minutos no texto e de 20 para 5 minutos no quadro. Os resultados são relatos da equipe; dados brutos de validação não acompanham este arquivo.
-- As instruções de compilação e as particularidades dos códigos estão nos READMEs de programação. O pôster não substitui a pinagem específica de cada robô.
+**[Abrir o pôster em PDF](banner-soccer-2026.pdf)** · [Abrir a prévia em PNG](banner-soccer-2026.png)
 
-[Licença MIT](../LICENSE) · [Início](../README.md)
+[![Pôster Sorobóticos para a etapa nacional de 2026](banner-soccer-2026.png)](banner-soccer-2026.pdf)
+
+Use o PDF para ampliar os diagramas e ler os textos em detalhe.
+
+## Explore os detalhes
+
+- [Descrição técnica completa](../tdp/TDP.md)
+- [Mecânica e arquivos CAD](../cad/README.md)
+- [Programação dos robôs](../code/README.md)
+- [Materiais e eletrônica](../electronics/README.md)
+
+[Início](../README.md) · [Licença MIT](../LICENSE)

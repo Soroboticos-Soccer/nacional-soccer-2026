@@ -1,28 +1,43 @@
-# Atacante — núcleos M4 e M7
+# Atacante
 
-[Sketch](atacante_m4/atacante_m4.ino) para Arduino GIGA R1 WiFi, núcleo M4.
+**Busca, condução e finalização · Arduino GIGA R1 WiFi**
 
-O código lê 16 TSOPs durante janelas de 50 ms. Um sensor fica ativo quando registra pelo menos 5 mudanças. O maior grupo coerente determina a direção; em empate, vence a maior soma de mudanças. O centro é a média das posições físicas dos sensores ativos do grupo, arredondada e convertida para índice de 0 a 15.
+[Início](../../README.md) · [Firmware](../README.md) · [Goleiro](../goleiro/README.md)
 
-O envio usa `RPC.send("anel", direcao, mascara)`. A direção vai de 0 a 15, ou -1 sem detecção. Os bits 0 a 15 representam os sensores físicos 1 a 16. Consulte o [protocolo](../protocolo-rpc.md) e a [pinagem](../pinagem-tsop.csv).
+O atacante combina a direção da bola com orientação angular e medição de distâncias para executar sua movimentação.
 
-## Comportamentos da versão recebida
+## Sketches
 
-- A função de vizinhança permite o salto do TSOP 5 ao 7, comentado como tratamento do TSOP 6 defeituoso.
-- O TSOP 6 continua sendo lido e pode ser marcado como ativo; ele não é desabilitado pelo código.
-- O agrupamento percorre o vetor de forma linear. Os sensores 16 e 1 não são unidos em um único grupo.
-- O sketch não inicializa Serial nem desenha no OLED. O comentário sobre OLED não corresponde a uma implementação de display neste arquivo.
+| Núcleo | Arquivo | Responsabilidade |
+| --- | --- | --- |
+| M4 | [atacante_m4.ino](atacante_m4/atacante_m4.ino) | Leitura dos 16 TSOPs e envio por RPC |
+| M7 | [atacante_m7.ino](atacante_m7/atacante_m7.ino) | Estratégia, motores, BNO055, ultrassônicos e OLED |
 
-Esses comportamentos foram documentados sem alterar a lógica fornecida.
+## Percepção da bola
 
-## M7 — movimentação e sensores
+O M4 lê os sensores em janelas de **50 ms**. Um TSOP é considerado ativo a partir de cinco mudanças de estado. O maior grupo coerente define a direção; em empate, prevalece a maior soma de mudanças.
 
-O [atacante_m7.ino](atacante_m7/atacante_m7.ino) recebe direção e máscara do M4 por `RPC.bind("anel", receberAnel)`. Controla quatro motores, lê quatro ultrassônicos, acompanha a orientação pelo BNO055 e apresenta diagnóstico no OLED. A estratégia usa direção TSOP, leituras do IR Seeker e afastamento das paredes, somando correção angular aos motores.
+A direção é calculada pela média das posições físicas do grupo e convertida para **0–15**. O valor **-1** indica ausência de detecção. A máscara usa os bits 0–15 para representar os sensores físicos 1–16.
 
-O IR Seeker é lido com `InfraredSeeker::ReadAC()`. O ESC é inicializado no pino 8 com pulso mínimo; o anexo contém a função de parada do dribbler, sem comando ativo de aceleração. O botão principal é o pino 55, o botão 2 é o 57 e o seletor de sensor é o 13.
+O agrupamento percorre o vetor linearmente, com tratamento de vizinhança entre os sensores 5 e 7. O sensor 6 participa da leitura; os sensores 16 e 1 são tratados em grupos separados.
 
-As chamadas `verificarComandosSerial()` e a verificação de BNO no início do modo de jogo estão comentadas no `loop()` recebido. Não há modo de teste Serial equivalente ao do goleiro habilitado neste anexo. O código foi preservado, sem afirmar que essas verificações estejam ativas.
+[Pinagem dos TSOPs](../pinagem-tsop.csv) · [Protocolo RPC](../protocolo-rpc.md)
 
-Veja [dependências, gravação e calibração](../README.md). Compilação e testes físicos pendentes.
+## Controle e interface
 
-[Pôster](../../poster/README.md) · [Licença MIT](../../LICENSE) · [Início](../../README.md)
+O M7 recebe o evento `anel` e combina a direção TSOP, o HiTechnic IR Seeker e as distâncias dos quatro ultrassônicos. A correção angular pelo BNO055 é somada ao comando dos quatro motores. O OLED apresenta informações de operação.
+
+| Entrada ou saída | Pino |
+| --- | --- |
+| Botão principal | 55 |
+| Botão 2 | 57 |
+| Seletor de sensor | 13 |
+| ESC | 8 |
+
+O ESC inicia com pulso mínimo. A configuração de jogo utiliza a movimentação do robô para conduzir a bola.
+
+## Preparação
+
+Siga as [instruções de dependências, gravação e calibração](../README.md). Consulte as constantes no M7 para ajustar velocidades, limites de distância e orientação à montagem.
+
+[Eletrônica](../../electronics/README.md) · [TDP](../../tdp/TDP.md) · [Licença MIT](../../LICENSE)

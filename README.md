@@ -1,30 +1,63 @@
-# Sorobóticos — Nacional Soccer 2026
+<div align="center">
 
-Repositório da equipe Sorobóticos, da Escola SESI CE 123 de Sorocaba (SP), para a RoboCupJunior Soccer — Soccer Infrared 2026.
+# Sorobóticos
+### RoboCupJunior Soccer Infrared · Nacional 2026
 
-## Documentação
+**SESI CE 123 · Sorocaba, São Paulo · Brasil**
 
-- [Pôster da equipe em resolução original](poster/banner-soccer-2026.png) e [notas do pôster](poster/README.md)
-- [TDP completo](tdp/TDP.md) e [imagens do TDP](tdp/media/)
-- [Lista de materiais — BOM](electronics/bom.csv) e [conferências de custos](electronics/README.md)
-- [Projetos mecânicos e arquivos CAD](cad/README.md)
-- [Simulador SoroSoccer](simulator-sorosoccer/README.md)
+[![Liga](https://img.shields.io/badge/RoboCupJunior-Soccer_Infrared-FF00B8?style=flat-square)](tdp/TDP.md)
+[![Plataforma](https://img.shields.io/badge/Arduino-GIGA_R1_WiFi-00878F?style=flat-square)](code/README.md)
+[![Licença](https://img.shields.io/badge/Licença-MIT-FF00B8?style=flat-square)](LICENSE)
 
-[![Pôster Sorobóticos — Nacional Soccer 2026](poster/banner-soccer-2026.png)](poster/banner-soccer-2026.png)
+[Documentação técnica](tdp/TDP.md) · [Programação](code/README.md) · [Lista de materiais](electronics/bom.csv) · [Pôster](poster/README.md)
 
-## Programação
+<img src="assets/equipe-soroboticos.png" alt="Equipe Sorobóticos com os dois robôs de futebol no Fab Lab" width="900" />
 
-Os códigos fornecidos pela equipe estão organizados por robô e núcleo do Arduino GIGA R1 WiFi. O M4 lê os TSOPs e envia a direção por RPC; o M7 recebe os dados e executa movimentação, orientação, ultrassônicos e OLED.
+</div>
 
-| Robô | M4 — sensores | M7 — controle |
+## A equipe
+
+Somos a Sorobóticos, equipe de robótica do SESI CE 123 de Sorocaba. Desenvolvemos dois robôs autônomos de futebol — atacante e goleiro — integrando programação, eletrônica e fabricação digital.
+
+Nossa estreia no Soccer em 2025/2026 conquistou o **1º lugar na categoria Rookie da etapa regional**. Este repositório reúne o trabalho para a etapa nacional de 2026.
+
+| Integrante | Área |
+| --- | --- |
+| Bruno Proença | Integração de software |
+| Henrique Cabral | Desenvolvimento de software |
+| Gabriela Reche | Projeto mecânico |
+| Heitor Ferreira | Integração de hardware |
+
+## Explore o projeto
+
+| Área | O que você encontra |
+| --- | --- |
+| [TDP](tdp/TDP.md) | Descrição técnica completa, estratégias, desenvolvimento e imagens dos robôs |
+| [Programação](code/README.md) | Firmware C++ para os núcleos M4 e M7 de cada robô |
+| [Eletrônica e BOM](electronics/README.md) | Componentes, custos, ferramentas e bibliotecas em CSV |
+| [Mecânica e CAD](cad/README.md) | Chassi, rodas e suportes em Fusion 360, STEP e STL |
+| [Pôster](poster/README.md) | Apresentação visual do projeto e PDF para leitura |
+| [SoroSoccer](simulator-sorosoccer/README.md) | Simulação e desenvolvimento de estratégias |
+
+## Arquitetura dos robôs
+
+O **Arduino GIGA R1 WiFi** distribui o processamento entre os dois núcleos: o M4 adquire os sinais infravermelhos e o M7 executa o controle. Quatro motores DC de 1000 RPM e rodas omnidirecionais permitem deslocamentos laterais e diagonais, com orientação pelo BNO055 e leitura de distâncias por ultrassônicos.
+
+| Robô | Percepção no M4 | Controle no M7 |
 | --- | --- | --- |
-| Atacante | [atacante_m4.ino](code/atacante/atacante_m4/atacante_m4.ino) | [atacante_m7.ino](code/atacante/atacante_m7/atacante_m7.ino) |
-| Goleiro | [goleiro_m4.ino](code/goleiro/goleiro_m4/goleiro_m4.ino) | [goleiro_m7.ino](code/goleiro/goleiro_m7/goleiro_m7.ino) |
+| Atacante | 16 TSOPs; direção 0–15 | Busca e condução da bola, orientação e movimentação |
+| Goleiro | 11 TSOPs; direção 1–11 | Acompanhamento lateral da bola e posicionamento defensivo |
 
-Consulte as [instruções de gravação e dependências](code/README.md), a [pinagem dos TSOPs](code/pinagem-tsop.csv) e o [protocolo M4 → M7](code/protocolo-rpc.md). Os anexos M7 foram preservados integralmente. A compilação para a placa e os testes em hardware ainda precisam ser realizados.
+A estrutura é modelada no Fusion 360 e fabricada por impressão 3D. Rodas duplas e encaixes tipo cauda de andorinha fazem parte do desenvolvimento mecânico da equipe.
 
-O atacante usa 16 TSOPs e o goleiro usa 11 nesta versão do código. O pôster registra outra apresentação do projeto e contém valores de custos diferentes da BOM; veja as [notas](poster/README.md).
+## Comece por aqui
 
-## Licença
+1. Leia o [TDP](tdp/TDP.md) para conhecer as decisões de projeto.
+2. Consulte a [BOM](electronics/bom.csv) e os [arquivos CAD](cad/README.md).
+3. Siga as [instruções de gravação](code/README.md) para preparar o firmware.
 
-Este projeto é disponibilizado sob a [licença MIT](LICENSE). Bibliotecas e ferramentas externas mantêm suas próprias licenças.
+## Contato e licença
+
+Acompanhe a equipe no [Instagram](https://www.instagram.com/_soroboticos/). Os contatos dos integrantes estão no [TDP](tdp/TDP.md#contato).
+
+Disponibilizado sob a [licença MIT](LICENSE). Ferramentas e bibliotecas externas mantêm suas respectivas licenças.

@@ -1,19 +1,36 @@
-# Projetos mecânicos e CAD
+# Mecânica e CAD
 
-Arquivos da estrutura e das rodas dos robôs Sorobóticos para a etapa nacional de 2026.
+**Chassi, rodas e suportes · Sorobóticos 2026**
 
-| Arquivos | Conteúdo |
-| --- | --- |
-| `chassi inferior v8.2.f3d` / `chassi inferior v8.2.stl` | Chassi inferior, projeto Fusion 360 e malha para fabricação |
-| `chassi superior encaixes 2.3.f3d` | Chassi superior e encaixes |
-| `meio soccer.f3d` | Estrutura intermediária |
-| `Topo_Soccer_v1.f3d` | Estrutura superior |
-| `TSOP new.f3d` / `TSOP new_goleiro.f3d` | Projetos dos suportes TSOP |
-| `Montagem_roda_soccer.step` | Montagem da roda em STEP |
-| `suporte Ultrassonico pronto.stl` | Suporte de ultrassônico |
+[Início](../README.md) · [TDP](../tdp/TDP.md) · [Materiais](../electronics/README.md)
 
-Abra `.f3d` no Fusion 360, `.step` em um CAD compatível e `.stl` no fatiador de impressão 3D. Confira dimensões, materiais e encaixes antes de fabricar; parâmetros de impressão não estão documentados nesta pasta.
+Os projetos mecânicos organizam os componentes dos robôs e facilitam o acesso para manutenção. O desenvolvimento combina modelagem no **Fusion 360**, prototipagem e fabricação por impressão 3D.
 
-O [pôster](../poster/README.md) e o [TDP](../tdp/TDP.md) apresentam a estrutura, as rodas omnidirecionais e os encaixes tipo andorinha. Consulte a [BOM](../electronics/README.md) para os materiais e a [programação](../code/README.md) para as diferenças de sensores entre os robôs.
+## Arquivos do projeto
 
-[Licença MIT](../LICENSE) · [Início](../README.md)
+| Arquivo | Aplicação | Formato |
+| --- | --- | --- |
+| [Chassi inferior](chassi%20inferior%20v8.2.f3d) | Base e estrutura inferior | Fusion 360 |
+| [Chassi inferior para impressão](chassi%20inferior%20v8.2.stl) | Malha do chassi inferior | STL |
+| [Chassi superior e encaixes](chassi%20superior%20encaixes%202.3.f3d) | Estrutura superior | Fusion 360 |
+| [Estrutura intermediária](meio%20soccer.f3d) | Parte central do conjunto | Fusion 360 |
+| [Topo](Topo_Soccer_v1.f3d) | Estrutura de fechamento | Fusion 360 |
+| [Suporte TSOP do atacante](TSOP%20new.f3d) | Posicionamento dos sensores IR | Fusion 360 |
+| [Suporte TSOP do goleiro](TSOP%20new_goleiro.f3d) | Posicionamento dos sensores IR | Fusion 360 |
+| [Montagem da roda](Montagem_roda_soccer.step) | Roda omnidirecional | STEP |
+| [Suporte ultrassônico](suporte%20Ultrassonico%20pronto.stl) | Fixação do sensor de distância | STL |
+
+## Desenvolvimento e fabricação
+
+O chassi utiliza encaixes tipo **cauda de andorinha** para facilitar a manutenção. As rodas duplas combinam estrutura em ABS, roletes deslizantes em resina ABS Like, roletes flexíveis e eixos de aço trefilado.
+
+Para reproduzir uma peça:
+
+1. Abra o arquivo Fusion 360 ou STEP em um CAD compatível.
+2. Confira dimensões, encaixes e orientação da montagem.
+3. Exporte a malha e prepare o fatiamento no OrcaSlicer.
+4. Valide o encaixe com uma impressão parcial antes de fabricar o conjunto.
+
+A descrição dos materiais, espessuras, protótipos e testes está na seção de [design mecânico do TDP](../tdp/TDP.md#design-mecânico).
+
+[Início](../README.md) · [Licença MIT](../LICENSE)

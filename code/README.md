@@ -1,36 +1,61 @@
-# Programações dos robôs
+# Firmware dos robôs
 
-Códigos fornecidos pela equipe para Arduino GIGA R1 WiFi, organizados em sketches separados por núcleo. Os M7s foram adicionados integralmente a partir dos anexos, sem alterar sua lógica; os M4s existentes foram mantidos.
+**Arduino GIGA R1 WiFi · C++ · M4 e M7**
 
-| Robô | M4 — leitura | M7 — controle | Direção RPC |
-| --- | --- | --- | --- |
-| Atacante | [atacante_m4.ino](atacante/atacante_m4/atacante_m4.ino) | [atacante_m7.ino](atacante/atacante_m7/atacante_m7.ino) | 0 a 15; -1 sem detecção |
-| Goleiro | [goleiro_m4.ino](goleiro/goleiro_m4/goleiro_m4.ino) | [goleiro_m7.ino](goleiro/goleiro_m7/goleiro_m7.ino) | 1 a 11; -1 sem detecção |
+[Início](../README.md) · [Atacante](atacante/README.md) · [Goleiro](goleiro/README.md) · [Pinagem](pinagem-tsop.csv)
 
-## Dependências
+O firmware divide a aquisição dos sensores infravermelhos e o controle do robô entre os dois núcleos do GIGA. Cada robô utiliza um sketch **M4** para os TSOPs e um **M7** para movimentação, orientação e interface.
 
-Use o suporte de placa Arduino GIGA R1 WiFi (Arduino Mbed OS Giga Boards), com `Arduino.h`, `RPC.h`, `Wire.h` e o ambiente RTOS utilizado pelo RPC. Para os M7s, instale as bibliotecas que fornecem:
+## Organização
 
-- `Adafruit_Sensor.h` — Adafruit Unified Sensor;
-- `Adafruit_BNO055.h` e `utility/imumaths.h` — Adafruit BNO055;
-- `Adafruit_GFX.h` — Adafruit GFX Library;
-- `Adafruit_SSD1306.h` — Adafruit SSD1306;
-- `HTInfraredSeeker.h` — biblioteca HiTechnic IR Seeker compatível com `InfraredSeeker::ReadAC()`;
-- `Servo.h` — implementação compatível com o GIGA.
+| Robô | Aquisição M4 | Controle M7 |
+| --- | --- | --- |
+| Atacante | [atacante_m4.ino](atacante/atacante_m4/atacante_m4.ino) | [atacante_m7.ino](atacante/atacante_m7/atacante_m7.ino) |
+| Goleiro | [goleiro_m4.ino](goleiro/goleiro_m4/goleiro_m4.ino) | [goleiro_m7.ino](goleiro/goleiro_m7/goleiro_m7.ino) |
 
-Instale também as dependências solicitadas pelo gerenciador de bibliotecas. As versões das bibliotecas não foram informadas nos anexos; a compilação ainda não foi validada.
+A comunicação usa RPC dentro da mesma placa. O M4 envia direção e máscara de sensores ativos; o M7 recebe o evento `anel`. Consulte o [protocolo M4 → M7](protocolo-rpc.md).
 
-## Gravação e inicialização
+## Ambiente e bibliotecas
 
-1. Confira a [pinagem dos TSOPs](pinagem-tsop.csv) e as definições de motores, botões e ultrassônicos no M7 correspondente. A pinagem difere entre atacante e goleiro.
-2. Abra o `.ino` do M4 no Arduino IDE, selecione Arduino GIGA R1 WiFi e o núcleo M4, compile e grave.
-3. Abra o `.ino` do M7 do mesmo robô em sua própria pasta, selecione o núcleo M7, compile e grave. Cada pasta tem o mesmo nome de seu sketch; não una M4 e M7 em um único arquivo.
-4. Abra o Monitor Serial a 115200 baud. A inicialização mantém o ESC no mínimo durante 4 segundos e depois inicializa os sensores.
-5. Com `calibrar = true`, mantenha o robô parado para calibrar o BNO055. O setup aguarda o botão 2 em HIGH para iniciar e depois em LOW para definir o zero, conforme as mensagens do programa.
-6. No modo de jogo, botão principal em HIGH mantém os motores parados; LOW ativa a estratégia. Confira o comportamento dos motores com o robô suspenso antes dos testes em campo.
+No Arduino IDE, instale o pacote **Arduino Mbed OS Giga Boards** e selecione **Arduino GIGA R1 WiFi**.
 
-O BNO055 usa IMUPLUS, com referência relativa e possibilidade de drift. O OLED é 128 × 64, endereço I2C `0x3C`. O M7 recebe o RPC `anel` e invalida amostras com mais de 100 ms. Consulte o [protocolo](protocolo-rpc.md).
+| Biblioteca | Uso |
+| --- | --- |
+| Adafruit Unified Sensor | Interface de sensores |
+| Adafruit BNO055 | Orientação e utilitários de IMU |
+| Adafruit GFX Library | Elementos gráficos do display |
+| Adafruit SSD1306 | OLED I2C |
+| [HTInfraredSeeker](https://github.com/psycomp/RambamRoboticsClub/tree/master/Robotics%202016/libraries/HTInfraredSeeker) | Interface HiTechnic, com `InfraredSeeker::ReadAC()` |
+| Servo | Controle do ESC; use implementação compatível com GIGA |
 
-As particularidades dos anexos, inclusive trechos de diagnóstico e verificações comentadas, estão descritas nos READMEs do [atacante](atacante/README.md) e do [goleiro](goleiro/README.md). A presença dos quatro arquivos não representa validação de partida: compilação e testes físicos permanecem pendentes.
+Aceite as dependências indicadas pelo gerenciador de bibliotecas. `Arduino.h`, `Wire.h`, `RPC.h` e o ambiente RTOS são fornecidos pelo suporte da placa.
 
-[Pôster](../poster/README.md) · [Eletrônica](../electronics/README.md) · [Licença MIT](../LICENSE) · [Início](../README.md)
+## Gravação
+
+1. Confira a [pinagem TSOP](pinagem-tsop.csv) e os pinos definidos no M7 do robô.
+2. Abra o sketch M4, selecione o núcleo **M4**, compile e grave.
+3. Abra o sketch M7 do mesmo robô, selecione o núcleo **M7**, compile e grave.
+4. Abra o Monitor Serial em **115200 baud**.
+
+Mantenha cada sketch na pasta de mesmo nome. Os dois núcleos são gravados separadamente.
+
+## Inicialização e calibração
+
+O setup inicializa o ESC no pulso mínimo durante quatro segundos e prepara os sensores. Com `calibrar = true`, mantenha o robô parado para calibrar o BNO055 e siga as mensagens no Serial: botão 2 em **HIGH** inicia a calibração; depois, **LOW** define o zero.
+
+No modo de jogo, o botão principal em **HIGH** mantém a tração parada e em **LOW** ativa a estratégia. Verifique o sentido dos motores com o robô suspenso antes do teste em campo.
+
+## Referências de operação
+
+| Recurso | Configuração |
+| --- | --- |
+| BNO055 | Modo IMUPLUS, referência angular relativa |
+| Display | OLED 128 × 64, I2C `0x3C` |
+| RPC | Evento `anel`, direção e máscara de bits |
+| Validade da amostra IR | 100 ms no receptor M7 |
+| TSOPs do atacante | 16 sensores, direção 0–15 |
+| TSOPs do goleiro | 11 sensores, direção 1–11 |
+
+As estratégias, parâmetros e comandos de diagnóstico estão nas páginas do [atacante](atacante/README.md) e do [goleiro](goleiro/README.md).
+
+[Eletrônica](../electronics/README.md) · [TDP](../tdp/TDP.md) · [Licença MIT](../LICENSE)
